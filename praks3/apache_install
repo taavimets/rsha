@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+dpkg-query -W -f='${Status}' apache2 | grep -c 'ok installed'
+if [ $? -ne 0 ]
+then
+	apt-get install apache2
+else
+	echo "apache juba installitud"
+fi
