@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+dpkg-query -W -f='${Status}' php5 | grep -c 'ok installed'
+if [ $? -ne 0  ]
+then
+	apt-get install php5
+else
+	echo "php5 juba installitud"
+fi
