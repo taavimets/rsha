@@ -1,0 +1,7 @@
+#!/bin/bash
+#
+newuser=$1
+randompw=$(pwgen)
+useradd -D $newuser
+echo $newuser:$(randompw 7)
+echo "UserID:" $newuser "on tehtud järgmise parooliga:" $randompw
