@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+dpkg-query -W -f='${Status}' phpmyadmin | grep -c 'ok installed'
+if [ $? -ne 0 ]
+then
+	apt-get install phpmyadmin
+else
+	echo "phpmyadmin juba installitud"
+fi
