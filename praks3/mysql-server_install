@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+dpkg-query -W -f='${Status}' mysql-server | grep -c 'ok installed'
+if [ $? -ne 0 ]
+then
+	apt-get install mysql-server
+else
+	echo "mysql server juba installitud"
+fi
