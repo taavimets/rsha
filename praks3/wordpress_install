@@ -1,0 +1,9 @@
+#!/bin/bash
+#
+dpkg-query -W -f='${Status}' wordpress | grep -c 'ok installed'
+if [ $? -ne 0 ]
+then
+	apt-get install wordpress
+else
+	echo "wordpress juba installitud"
+fi
