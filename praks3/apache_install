@@ -6,4 +6,5 @@ then
 	apt-get install apache2
 else
 	echo "apache juba installitud"
+	service apache2 status
 fi
