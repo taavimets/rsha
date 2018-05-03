@@ -6,4 +6,5 @@ then
 	apt-get install mysql-server
 else
 	echo "mysql server juba installitud"
+	service mysql status
 fi
