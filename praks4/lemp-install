@@ -1,0 +1,58 @@
+#!/bin/bash
+#
+echo "Lemp installmenüü"
+echo "mida soovid teha:"
+echo "1 - Paigalda Nginx"
+echo "2 - Paigalda MySQL"
+echo "3 - Paigalda PHP"
+echo "4 - Paigalda PhpMyAdmin"
+echo "5 - Paigalda Wordpress"
+echo "6 - Paigalda kõik"
+echo "7 - Välju menüüst"
+echo -n "Palun vali tegevus: "
+read valik
+
+if [$valik = 1]; then
+	if [ "dpkg-query -W -f='${Status}' nginx | grep -c "ok installed"" == 1]; then
+		echo "nginx on juba installitud"
+	else
+		apt-get install nginx
+	fi
+elif [ $valik = 2 ]; then
+	if [ "dpkg-query -W -f='${Status}' mysql | grep -c "ok installed"" == 1 ]; then
+		echo "MySQL on juba installitud"
+	else
+		apt-get install mysql-server
+	fi
+elif [ $valik = 3 ]; then
+	if [ "dpkg-query -W -f='${Status}' php | grep -c "ok installed"" == 1] && [ "dpkg-query -W -f='${Status}' libapache2-mod-php | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' php-mcrypt | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' php-mysql | grep -c "ok installed"" = 1 ]; then
+		echo "php ja selle vajalikud osad on juba installitud"
+	else
+		apt-get install php-fpm php-mcrypt php-mysql php-cli php-curl
+	service php-fpm restart
+	phpenmod mcrypt
+	fi
+elif [ $valik = 4 ]; then
+	if [ "dpkg-query -W -f='${Status}' phpmyadmin | grep -c "ok installed"" == 1 ]; then
+		echo "phpmyadmin juba installitud"
+	else
+		apt-get install phpmyadmin
+	fi
+elif [ $valik = 5 ]; then
+	if [ "dpkg-query -W -f='${Status}' wordpress | grep -c "ok installed"" == 1 ]; then
+		echo "wordpress juba installitud"
+	else
+		apt-get install wordpress
+	fi
+elif [ $valik = 6 ]; then
+	if [ "dpkg-query-W -f='${Status}' nginx | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' mysql-server | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' php | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' phpmyadmin | grep -c "ok installed"" == 1 ] && [ "dpkg-query -W -f='${Status}' wordpress | grep -c "ok installed"" == 1 ]; then
+		"echo vajalikud packaged on juba installitud"
+	else
+		apt-get install nginx mysql-server php-fpm php-mcrypt php-mysql php-cli php-curl phpmyadmin wordpress
+	service php-fpm restart
+	phpenmod mcrypt
+	fi
+elif [ $valik = 7 ]; then
+	exit
+fi
+
