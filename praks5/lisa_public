@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+if [ $# -ne 1 ]; then
+	echo "Kasutusjuhend: $0 Kasutajanimi"
+else
+
+kasutaja=$1
+
+mkdir /home/$kasutaja/public
+chmod -R 751 /home/$kasutaja/public
+echo "<html><body>Teretulemast $kasutaja</body></html>" > /home/$kasutaja/public/index.html
+sed -i 's/public_html/public/g' /etc/apache2/mods-available/userdir.conf
+a2enmod userdir
+service apache2 restart
+
+if [ $? -eq 0 ]; then
+	echo "veebileht on loodud kasutajale $kasutaja"
+	echo "sellele saab minna aadressiga: http://172.23.13.43/~$kasutaja/index.html"
+else
+	echo "tekkis probleem veebilehe loomisel"
+fi
+fi
