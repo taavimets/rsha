@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+kasutaja=$1
+parool=$(tr -cd '[:alnum:]' < /dev/urandom | fold -w20 | head -n1)
+echo "password=$parool" > .parool.tmp
+echo "$parool" > .parool2.tmp
+
+if [ $# -ne 1 ]; then
+	echo "Kasutusjuhend: $0 Kasutajanimi"
+else
+	echo "Sisesta andmebaasi root kasutaja parool: "
+read dbrootpass
+
+echo "[client]" > /home/$kasutaja/.my.cnf
+echo "user=$kasutaja" >> /home/$kasutaja/.my.cnf
+paste .parool.tmp >> /home/$kasutaja/.my.cnf
+
+echo "Sisestage andmebaasi nimi"
+read dbnimi
+dbname="$kasutaja""_""$dbnimi"
+
+for dbpass in $(cat .parool2.tmp)
+do
+mysql -uroot -p$dbrootpass -e "create database $dbname ; GRANT ALL PRIVILEGES ON $dbname.* TO $kasutaja$localhost IDENTIFIED BY '$dbpass'"
+	echo "andmebaas tehtud"
+done
+
+chown "$kasutaja"":""$kasutaja" /home/$kasutaja/.my.cnf
+chmod 0644 /home/$kasutaja/.my.cnf
+rm .parool.tmp
+rm .parool2.tmp
+fi
